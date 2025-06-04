@@ -1,26 +1,26 @@
-const client_id = "e25a9541103b4281965e723111e57950";
-const spotify_endpoint = "https://accounts.spotify.com/authorize";
-const redirect_uri = "https://johrikeshav.github.io/statify/stats.html";
-const space_delimiter = "%20";
-const scopes = [
-  "playlist-read-private",
-  "playlist-read-collaborative",
-  "user-read-playback-position",
-  "user-top-read",
-  "user-read-recently-played",
-  "user-library-read",
-  "user-read-email",
-  "user-read-private",
-];
-const scopes_uri_param = scopes.join(space_delimiter);
+var redirect_uri = "https://johrikeshav.github.io/statify/stats.html";
+var client_id = "e25a9541103b4281965e723111e57950";
+var client_secret = "7bba00da10c4459e8887c29f5ce034ba";
 
-window.addEventListener("DOMContentLoaded", () => {
-  const btn = document.getElementById("login_button");
-  btn.addEventListener("click", () => {
-    const authUrl = `${spotify_endpoint}?client_id=${client_id}&response_type=token&redirect_uri=${encodeURIComponent(
-      redirect_uri
-    )}&scope=${scopes_uri_param}&show_dialog=true`;
-    window.location = authUrl;
-    console.log("clicked");
+const authorize = "https://accounts.spotify.com/authorize";
+
+function on_page_load() {}
+
+function request_authorization() {
+  let url = authorize;
+  url += "?client_id=" + client_id;
+  url += "&response_type=code";
+  url += "&redirect_uri=" + encodeURI(redirect_uri);
+  url += "&show_dialog=true";
+  url +=
+    "&scope=playlist-read-private playlist-read-collaborative playlist-modify-private playlist-modify-public user-read-playback-position user-top-read user-read-recently-played user-library-read user-library-modify user-read-email user-read-private";
+  window.location.href = url;
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const button = document.getElementById("login_button");
+  button.addEventListener("click", () => {
+    console.log("Button was clicked!");
+    request_authorization();
   });
 });
