@@ -1,10 +1,27 @@
 var redirect_uri = "https://johrikeshav.github.io/statify/stats.html";
 var client_id = "e25a9541103b4281965e723111e57950";
-var client_secret = "7bba00da10c4459e8887c29f5ce034ba";
+var client_secret = "";
 
 const authorize = "https://accounts.spotify.com/authorize";
 
-function on_page_load() {}
+function on_page_load() {
+  if (window.location.search.length > 0) {
+    handle_redirect();
+  }
+}
+
+function handle_redirect() {
+  let code = get_code();
+}
+
+function get_code() {
+  let code = null;
+  const query_string = window.location.search;
+  if (query_string.length > 0) {
+    const url_params = new URLSearchParams(query_string);
+    code = url_params.get_code("code");
+  }
+}
 
 function request_authorization() {
   let url = authorize;
