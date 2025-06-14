@@ -17,8 +17,8 @@ from flask import Flask, request, redirect, session, url_for, render_template # 
 app = Flask(__name__)
 app.secret_key = '457878f51e8b4ddba3b4df5be79af8e9' # Needed for session management
 
-CLIENT_ID = ""
-CLIENT_SECRET = ""
+CLIENT_ID = "e25a9541103b4281965e723111e57950"
+CLIENT_SECRET = "7bba00da10c4459e8887c29f5ce034ba"
 REDIRECT_URI = "http://127.0.0.1:5000/callback" 
 
 AUTH_URL = "https://accounts.spotify.com/authorize"
@@ -223,7 +223,8 @@ def stats():
     print(f"song url is :{song_url}")
 
     predicted_value_raw = None
-
+    final_match = None
+    
     # parsing the to get the track id
     # urlparse breaks the URL into its components
     if song_url:
@@ -371,6 +372,7 @@ def stats():
         #print(f"Model intercept: {model.intercept_}\n")
 
         predicted_value_raw = model.predict(model_input_np)[0][0]
+        final_match = int(predicted_value_raw)
         print(predicted_value_raw)
 
     # --- 4. Pass everything to the template ---
@@ -383,7 +385,7 @@ def stats():
                            top_genre_img = top_genre_img,
                            most_popular = most_popular,
                            least_popular = least_popular,
-                           predicted_value_raw = predicted_value_raw,
+                           predicted_value_raw = final_match,
                            selected_range=selected_time_range) # For highlighting the active nav link
 
     
