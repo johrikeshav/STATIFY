@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="author" content="Keshav Johri" />
+    <meta name="description" content="usage statistics" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>USAGE STATISTICS</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/stats.css') }}"
+    />
+  </head>
+  <body>
+    <header>
+      <h1>STATIFY</h1>
+      <p class="greeting">HI {{name}}</p>
+      <p class="stats_where">SCROLL DOWN TO VIEW YOUR USAGE STATS</p>
+      <div class="ml">
+        <ul>
+          <li class="song_input">
+            <form action="/stats" method="POST">
+              <p>
+                GIVE US A SONG AND WE'LL TELL YOU HOW MUCH IT MATCHES YOUR MUSIC
+                TASTE
+              </p>
+              <input
+                class="textbox"
+                placeholder="Copy your song url here"
+                type="text"
+                name="song"
+                id="song"
+                required
+              />
+              <input class="submit_button" type="submit" value="SUBMIT" />
+            </form>
+          </li>
+          <li class="ml_output">
+            {% if predicted_value_raw %}
+            <p>% MATCH : {{ int(predicted_value_raw) }}</p>
+            {% else %}
+            <p>LETS SEE IF YOU ARE REALLY GOING BACK TO 505</p>
+            {% endif %}
+          </li>
+        </ul>
+      </div>
+      <ul class="durations">
+        <li class="{% if selected_range == 'short_term' %}active{% endif %}">
+          <a href="{{ url_for('stats', time_range='short_term') }}">1 MONTH</a>
+        </li>
+        <li class="{% if selected_range == 'medium_term' %}active{% endif %}">
+          <a href="{{ url_for('stats', time_range='medium_term') }}"
+            >6 MONTHS</a
+          >
+        </li>
+        <li class="{% if selected_range == 'long_term' %}active{% endif %}">
+          <a href="{{ url_for('stats', time_range='long_term') }}">1 YEAR</a>
+        </li>
+      </ul>
+    </header>
+    <main>
+      <ul class="statistics">
+        <li class="artists">
+          <div class="artist_list" , class="list">
+            {% if artists %}
+            <p>TOP ARTISTS</p>
+            <ol>
+              {% for artist in artists %}
+              <li>{{ artist.name }}</li>
+              {% endfor %}
+            </ol>
+            {% else %}
+            <p>NO ARTISTS FOUND</p>
+            {% endif %}
+          </div>
+          <div class="artist_display">
+            {% if artists %}
+            <img src="{{ artists[0].images[0].url }}" />
+            {% endif %}
+          </div>
+        </li>
+        <li class="tracks">
+          <div class="track_display">
+            {% if tracks %}
+            <img src="{{ tracks[0].album.images[0].url }}" />
+            {% endif %}
+          </div>
+          <div class="track_list" , class="list">
+            {% if tracks %}
+            <p>TOP TRACKS</p>
+            <ol>
+              {% for track in tracks %}
+              <li>{{ track.name }}</li>
+              {% endfor %}
+            </ol>
+            {% else %}
+            <p>NO TRACKS FOUND</p>
+            {% endif %}
+          </div>
+        </li>
+        <li class="genres">
+          <div class="genre_list" , class="list">
+            {% if top_genres %}
+            <p>TOP GENRES</p>
+            <ol>
+              {% for genre in top_genres %}
+              <li>{{ genre[0].capitalize() }}</li>
+              {% endfor %}
+            </ol>
+            {% else %}
+            <p>NO GENRES FOUND</p>
+            {% endif %}
+          </div>
+          <div class="genre_display">
+            <img src="{{top_genre_img}}" />
+          </div>
+        </li>
+        <li class="popularity">
+          <ul class="popularity_stats">
+            <li>POPULARITY</li>
+            <li>HIGHEST : {{ most_popular[0] }}</li>
+            <li>LOWEST : {{ least_popular[0] }}</li>
+          </ul>
+          <div class="popularity_plots">
+            <img class="popular_img" src="{{most_popular[2]}}" />
+            <img class="unpopular_img" src="{{least_popular[2]}}" />
+          </div>
+        </li>
+      </ul>
+    </main>
+    <footer>
+      <ul>
+        <li><h1>STATIFY</h1></li>
+        <li>
+          <p>MADE WITH 🤍 BY KESHAV JOHRI</p>
+          <div>
+            <a href="https://www.linkedin.com/in/keshav-johri-1a79661b7/"
+              ><img
+                src="{{ url_for('static', filename='images/linkedin_logo.png') }}"
+            /></a>
+            <a href="https://github.com/johrikeshav"
+              ><img
+                src="{{ url_for('static', filename='images/github_logo.png') }}"
+            /></a>
+          </div>
+        </li>
+      </ul>
+    </footer>
+  </body>
+</html>
